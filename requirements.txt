@@ -1,0 +1,2 @@
+numpy==1.17.4
+moderngl_window==2.3.0
