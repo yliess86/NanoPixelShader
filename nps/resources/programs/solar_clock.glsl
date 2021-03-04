@@ -35,7 +35,7 @@ out vec4 f_color;
 #define VENUS_ORBITAL  0.2
 #define EARTH_ORBITAL  0.4
 #define MOON_ORBITAL   0.05
-#define PATH_THICKNESS 0.0001
+#define PATH_THICKNESS 0.0005
 
 struct planet  { vec2 pos; float radius; };
 struct orbital { vec2 pos; float radius; };
