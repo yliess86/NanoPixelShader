@@ -20,7 +20,7 @@ class FakeUniform:
 class NPS(mglw.WindowConfig):
     title       : str             = "Nano Pixel Shader"
     gl_version  : Tuple[int, int] = (3, 3)
-    window_size : Tuple[int, int] = 1280, 720
+    window_size : Tuple[int, int] = (1280, 720)
     aspect_ratio: float           = 16 / 9
     vsync       : bool            = False
     resizable   : bool            = False
@@ -65,7 +65,7 @@ class NPS(mglw.WindowConfig):
     @property
     def date(self) -> Tuple[float, float, float]:
         date = datetime.datetime.now()
-        return (date.hour % 12) / 12, date.minute / 60, date.second / 60
+        return ((date.hour % 12) / 12, date.minute / 60, date.second / 60)
 
 
 NPS.run()
