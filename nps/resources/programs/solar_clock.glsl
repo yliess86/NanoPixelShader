@@ -53,22 +53,23 @@ float sdf_scene(in vec2 p) {
     float earth_t = PI + 2.0 * PI * u_date.y;
     float moon_t  = PI + 2.0 * PI * u_date.z;
 
-    vec2 sun_pos   = p + 0.1 * vec2(0.26 * sin(0.21 * u_time), 0.23 * cos(0.27 * u_time));
+    vec2 perturb   = 0.1 * vec2(0.26 * sin(0.21 * u_time), 0.23 * cos(0.27 * u_time));
+    vec2 sun_pos   = p         + perturb;
     vec2 venus_pos = sun_pos   + VENUS_ORBITAL * vec2(sin(venus_t), cos(venus_t));
     vec2 earth_pos = sun_pos   + EARTH_ORBITAL * vec2(sin(earth_t), cos(earth_t));
     vec2 moon_pos  = earth_pos + MOON_ORBITAL  * vec2(sin(moon_t ), cos(moon_t ));
 
-    float sdf_sun   = sdf_planet(planet(sun_pos,   SUN_RADIUS  ), orbital(p,         0.0          ));
-    float sdf_venus = sdf_planet(planet(venus_pos, VENUS_RADIUS), orbital(sun_pos,   VENUS_ORBITAL));
-    float sdf_earth = sdf_planet(planet(earth_pos, EARTH_RADIUS), orbital(sun_pos,   EARTH_ORBITAL));
-    float sdf_moon  = sdf_planet(planet(moon_pos,  MOON_RADIUS ), orbital(earth_pos, MOON_ORBITAL ));
+    float sdf_sun   = sdf_planet(planet(sun_pos - 0.25 * perturb, SUN_RADIUS  ), orbital(p,         0.0          ));
+    float sdf_venus = sdf_planet(planet(venus_pos,                VENUS_RADIUS), orbital(sun_pos,   VENUS_ORBITAL));
+    float sdf_earth = sdf_planet(planet(earth_pos,                EARTH_RADIUS), orbital(sun_pos,   EARTH_ORBITAL));
+    float sdf_moon  = sdf_planet(planet(moon_pos,                 MOON_RADIUS ), orbital(earth_pos, MOON_ORBITAL ));
     
     return min(min(min(sdf_sun, sdf_venus), sdf_earth), sdf_moon);
 }
 
 void main() {
     vec2 uv = (v_uv - vec2(0.5)) * vec2(u_aspect, 1.0);
-    float dist = clamp(sdf_scene(uv) * 1000, 0.0 ,1.0);
+    float dist = 1.0 - clamp(sdf_scene(uv) * 1000, 0.0 ,1.0);
 
     f_color = vec4(vec3(dist), 1.0);
 }

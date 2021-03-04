@@ -26,9 +26,9 @@ class NPS(mglw.WindowConfig):
     resizable   : bool            = False
     samples     : int             = 8
 
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        program = self.load_program("programs/solar_clock.glsl")
+    def __init__(self, program: str, *args, **kwargs) -> None:
+        super(NPS, self).__init__(*args, **kwargs)
+        program = self.load_program(program)
 
         faces = np.array([0, 1, 2, 1, 2, 3], dtype=np.int32)
         verts = np.array([
@@ -68,4 +68,9 @@ class NPS(mglw.WindowConfig):
         return ((date.hour % 12) / 12, date.minute / 60, date.second / 60)
 
 
-NPS.run()
+class SolarClock(NPS):
+    def __init__(self, *args, **kwargs) -> None:
+        super(SolarClock, self).__init__("programs/solar_clock.glsl", *args, **kwargs)
+
+
+SolarClock.run()
