@@ -69,7 +69,7 @@ float sdf_scene(in vec2 p) {
 
 void main() {
     vec2 uv = (v_uv - vec2(0.5)) * vec2(u_aspect, 1.0);
-    float dist = 1.0 - clamp(sdf_scene(uv) * 1000, 0.0 ,1.0);
+    float dist = clamp(sdf_scene(uv) * 1000, 0.0 ,1.0);
 
     f_color = vec4(vec3(dist), 1.0);
 }
